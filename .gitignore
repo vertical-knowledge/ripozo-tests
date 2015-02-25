@@ -58,4 +58,7 @@ target/
 # PyCharm IDE
 .idea/
 
+# Ignore the setup.cfg file
+setup.cfg
+
 
