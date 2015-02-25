@@ -10,6 +10,7 @@ import six
 
 __author__ = 'Tim Martin'
 
+
 class InMemoryManager(BaseManager):
     objects = None
     _model_name = 'Fake'

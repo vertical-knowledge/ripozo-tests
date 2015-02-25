@@ -2,12 +2,11 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 from __future__ import unicode_literals
-from unittest import TestCase
 
 __author__ = 'Tim Martin'
 
 
-class TestBase(TestCase):
+class TestBase(object):
     def assertIn(self, member, container, msg=None):
         self.assertTrue(member in container, msg=msg)
 
