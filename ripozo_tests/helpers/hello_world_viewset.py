@@ -7,7 +7,7 @@ from ripozo.decorators import apimethod, validate
 from ripozo.viewsets.relationships.relationship import Relationship
 from ripozo.viewsets.fields.common import StringField
 from ripozo.viewsets.resource_base import ResourceBase
-from tests.unit.helpers.inmemory_manager import InMemoryManager
+from ripozo_tests.helpers.inmemory_manager import InMemoryManager
 
 
 class MM1(InMemoryManager):
