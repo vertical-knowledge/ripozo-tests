@@ -15,3 +15,7 @@ class FakeDispatcher(DispatcherBase):
         current_route = self.routes.get(endpoint) or []
         current_route.append(options)
         self.routes[endpoint] = current_route
+
+    @property
+    def base_url(self):
+        return 'http://127.0.0.1:7000/'
