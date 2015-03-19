@@ -7,6 +7,7 @@ from ripozo.decorators import apimethod, validate
 from ripozo.viewsets.relationships.relationship import Relationship
 from ripozo.viewsets.fields.common import StringField
 from ripozo.viewsets.resource_base import ResourceBase
+from ripozo.viewsets.constructor import ResourceMetaClass
 from ripozo_tests.helpers.inmemory_manager import InMemoryManager
 
 
@@ -16,25 +17,36 @@ class MM1(InMemoryManager):
 
 name_space = '/mynamspace/'
 
+def get_helloworld_viewset():
+    class HelloWorldViewset(ResourceBase):
+        _namespace = name_space
+        _manager = MM1
+        _resource_name = 'myresource'
+        _relationships = {
+            'relationship': Relationship(property_map={'related': 'id'}, relation='ComplimentaryViewset')
+        }
+        _fields = ['content']
 
-class HelloWorldViewset(ResourceBase):
-    _namespace = name_space
-    _manager = MM1
-    _resource_name = 'myresource'
-    _relationships = {
-        'relationship': Relationship(property_map={'related': 'id'}, relation='ComplimentaryViewset')
-    }
-    _fields = ['content']
-
-    @apimethod(methods=['GET'])
-    @validate(fields=[StringField('content')])
-    def hello(cls, request, *args, **kwargs):
-        request.validate(fields=[StringField('content')])
-        return cls(properties=request.query_args)
+        @apimethod(methods=['GET'])
+        @validate(fields=[StringField('content')])
+        def hello(cls, request, *args, **kwargs):
+            request.validate(fields=[StringField('content')])
+            return cls(properties=request.query_args)
+    return HelloWorldViewset
 
 
-class ComplimentaryViewset(ResourceBase):
-    _namespace = name_space
-    _manager = MM1
-    _resource_name = 'other_resource'
-    _pks = ['id']
+def get_complementary_viewset():
+    class ComplimentaryViewset(ResourceBase):
+        _namespace = name_space
+        _manager = MM1
+        _resource_name = 'other_resource'
+        _pks = ['id']
+    return ComplimentaryViewset
+
+
+def get_refreshed_helloworld_viewset():
+    ResourceMetaClass.registered_names_map = {}
+    ResourceMetaClass.registered_resource_classes = {}
+    HelloWorldViewset = get_helloworld_viewset()
+    ComplimentaryViewset = get_complementary_viewset()
+    return HelloWorldViewset
