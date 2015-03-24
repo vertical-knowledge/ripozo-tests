@@ -3,7 +3,7 @@ from __future__ import division
 from __future__ import print_function
 from __future__ import unicode_literals
 
-from ripozo.decorators import apimethod, validate
+from ripozo.decorators import apimethod, translate
 from ripozo.viewsets.relationships.relationship import Relationship
 from ripozo.viewsets.fields.common import StringField
 from ripozo.viewsets.resource_base import ResourceBase
@@ -28,9 +28,8 @@ def get_helloworld_viewset():
         _fields = ['content']
 
         @apimethod(methods=['GET'])
-        @validate(fields=[StringField('content')])
+        @translate(fields=[StringField('content')], validate=True)
         def hello(cls, request, *args, **kwargs):
-            request.validate(fields=[StringField('content')])
             return cls(properties=request.query_args)
     return HelloWorldViewset
 

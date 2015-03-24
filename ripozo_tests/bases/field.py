@@ -21,33 +21,32 @@ class FieldTestBase(TestBase):
 
     def test_not_required(self):
         f = self.field_type('field', required=False)
-        obj = f.translate_and_validate(None)
+        obj = f.translate(None, validate=True)
         self.assertIsNone(obj)
         obj = f.translate(None)
         self.assertIsNone(obj)
-        obj = f.validate(None)
+        obj = f.translate(None, validate=True)
         self.assertIsNone(obj)
 
     def test_required(self):
         f = self.field_type('field', required=True)
-        self.assertRaises(self.validation_exception, f.translate_and_validate, None)
-        self.assertRaises(self.validation_exception, f.validate, None)
+        self.assertRaises(self.validation_exception, f.translate, None, validate=True)
         self.assertIsNone(f.translate(None))
 
     def size_test_helper(self, too_small, valid, too_large, minimum=5, maximum=10):
         f = self.field_type('field', minimum=minimum, maximum=maximum)
-        self.assertRaises(self.validation_exception, f.validate, too_small)
+        self.assertRaises(self.validation_exception, f.translate, too_small, validate=True)
 
-        obj = f.validate(valid)
+        obj = f.translate(valid, validate=True)
         self.assertEqual(valid, obj)
 
-        self.assertRaises(self.validation_exception, f.validate, too_large)
+        self.assertRaises(self.validation_exception, f.translate, too_large, validate=True)
 
     def test_translation_failure(self):
         f = self.field_type('field')
         for failure in self.translation_failures:
             self.assertRaises(self.translation_exception, f.translate, failure)
-            self.assertRaises(self.translation_exception, f.translate_and_validate, failure)
+            self.assertRaises(self.translation_exception, f.translate, failure, validate=True)
 
     def test_translation_success(self):
         f = self.field_type('field')
