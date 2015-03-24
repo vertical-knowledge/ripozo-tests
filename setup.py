@@ -5,7 +5,7 @@ from __future__ import unicode_literals
 
 from setuptools import setup, find_packages
 
-version = '0.1.10'
+version = '0.1.11.dev0'
 
 setup(
     name='ripozo-tests',
