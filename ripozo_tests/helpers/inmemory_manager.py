@@ -20,12 +20,14 @@ class InMemoryManager(BaseManager):
         self.objects = {}
 
     def create(self, values, *args, **kwargs):
+        super(InMemoryManager, self).create(values, *args, **kwargs)
         new_id = uuid1()
         values['id'] = new_id
         self.queryset[new_id] = values
         return values
 
     def retrieve_list(self, filters, *args, **kwargs):
+        super(InMemoryManager, self).retrieve_list(filters, *args, **kwargs)
         pagination_page, filters = self.get_pagination_pks(filters)
         if not pagination_page:
             pagination_page = 0
@@ -45,9 +47,11 @@ class InMemoryManager(BaseManager):
 
     @property
     def queryset(self):
+        super(InMemoryManager, self).queryset
         return self.objects
 
     def retrieve(self, lookup_keys, *args, **kwargs):
+        super(InMemoryManager, self).retrieve(lookup_keys, *args, **kwargs)
         return self._get_model(lookup_keys)
 
     @property
@@ -55,6 +59,7 @@ class InMemoryManager(BaseManager):
         return self._model_name
 
     def update(self, lookup_keys, updates, *args, **kwargs):
+        super(InMemoryManager, self).update(lookup_keys, updates, *args, **kwargs)
         obj = self._get_model(lookup_keys)
         for key, value in six.iteritems(updates):
             obj[key] = value
@@ -62,9 +67,11 @@ class InMemoryManager(BaseManager):
         return obj
 
     def get_field_type(self, name):
+        super(InMemoryManager, self).get_field_type(name)
         pass
 
     def delete(self, lookup_keys, *args, **kwargs):
+        super(InMemoryManager, self).delete(lookup_keys, *args, **kwargs)
         self.queryset.pop(lookup_keys['id'])
         return None
 
