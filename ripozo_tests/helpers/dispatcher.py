@@ -12,10 +12,13 @@ class FakeDispatcher(DispatcherBase):
         self.routes = {}
 
     def register_route(self, endpoint, **options):
+        super(FakeDispatcher, self).register_route(endpoint, **options)
         current_route = self.routes.get(endpoint) or []
         current_route.append(options)
         self.routes[endpoint] = current_route
 
     @property
     def base_url(self):
+        # Just to get coverage on empty abstract methods
+        x = super(FakeDispatcher, self).base_url
         return 'http://127.0.0.1:7000/'
