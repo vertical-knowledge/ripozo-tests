@@ -22,9 +22,9 @@ def get_helloworld_viewset():
         _namespace = name_space
         _manager = MM1
         _resource_name = 'myresource'
-        _relationships = {
-            'relationship': Relationship(property_map={'related': 'id'}, relation='ComplimentaryViewset')
-        }
+        _relationships = [
+            Relationship('related', property_map={'related': 'id'}, relation='ComplimentaryViewset')
+        ]
         _fields = ['content']
 
         @apimethod(methods=['GET'])
